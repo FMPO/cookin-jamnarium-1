@@ -46,11 +46,13 @@ public class EnemyMovement : MonoBehaviour
         if (EnemyState == EnemyState.MOVING)
         {
             //rotate sprite towards target
-            float angle = Mathf.Atan2(targetTransform.position.y - transform.position.y, targetTransform.position.x - transform.position.x) * Mathf.Rad2Deg;
+            Vector2 direction = targetTransform.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
 
             //apply a force in movementDirection equal to moveSpeed
+            rb.linearVelocity = Vector2.zero;
             rb.AddForce(transform.right.normalized * moveSpeed, ForceMode2D.Force);
         }
         //else if bug is stunned,...
